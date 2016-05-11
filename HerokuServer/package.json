@@ -1,0 +1,17 @@
+{
+  "name": "ailab-mayfestival2016-server",
+  "version": "0.0.1",
+  "engines": {
+    "node": "5.9.1"
+  },
+  "main": "Server.js",
+  "scripts": {
+    "start": "node Server.js"
+  },
+  "dependencies": {
+    "socket.io":"1.4.5",
+    "socket.io-client":"",
+    "ejs": "2.4.1",
+    "express": "4.13.3"
+  }
+}

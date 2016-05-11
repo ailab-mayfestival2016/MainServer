@@ -1,0 +1,16 @@
+{
+  "name": "BaseServer",
+  "version": "0.0.1",
+  "engines": {
+    "node": "5.9.1"
+  },
+  "main": "BaseServer.js",
+  "scripts": {
+    "start": "node BaseServer.js"
+  },
+  "dependencies": {
+    "socket.io":"1.4.5",
+    "socket.io-client":"1.4.6",
+    "express": "4.13.3"
+  }
+}
