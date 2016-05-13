@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script src="/javascripts/FullObserver.js"></script>
+	<meta http-equiv="content-type"
+		content="text/html; charset=UTF-8">
+	<title>sample</title>
+	<style>
+	body { font-size:12pt; color:#006666; }
+	h1 { font-size:18pt; background-color:#AAFFFF; }
+	pre { background-color:#EEEEEE; }
+	div.box { overflow:scroll;height:30em}
+	</style>
+</head>
+<body>
+	<header>
+		<h1 id="h1">FullObserver</h1>
+	</header>
+	<button  onclick=javascript:connect() >接続</button>
+	<table border="1" id="latestTable">
+			<tr>
+				<td>部屋名</td>
+				<td>接続状態</td>
+				<td>累計受信数</td>
+				<td>最新イベント名</td>
+				<td>最新データ</td>
+			</tr>
+		</table>
+	<div id="latests"></div>
+</body>
+</html>

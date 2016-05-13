@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script src="/javascripts/Manager.js"></script>
+	<meta http-equiv="content-type"
+		content="text/html; charset=UTF-8">
+	<title>sample</title>
+	<style>
+	body { font-size:12pt; color:#006666; }
+	h1 { font-size:18pt; background-color:#AAFFFF; }
+	pre { background-color:#EEEEEE; }
+	div.box { overflow:scroll;height:30em}
+	</style>
+</head>
+<body>
+	<header>
+		<h1 id="h1">Manager</h1>
+	</header>
+	<p>接続状態 : <span id="connected">未接続</span></p>
+	<button  onclick=javascript:connect() >接続</button>
+	<p>px_ready : <span id="px_ready" style="color:#ff0000;">Not ready</span></p>
+	<p>
+		各種コマンド送信
+		<button id="openingButton" onclick=javascript:opening() >opening</button>
+		<button id="game_startSendButton" onclick=javascript:game_start() >game_start</button>
+		<button id="abortButton" onclick=javascript:abort() >abort</button>
+	</p>
+	<p>難易度入力<input type="text" id="diffBox" size=20></input><button id="difficultyButton" onclick=javascript:difficulty() >set difficulty</button></p>
+	<p>デバッグ用px_start送信<button id="px_startButton" onclick=javascript:px_start() >px_start</button></p>
+	<p><span style="font-size:16pt">バー設定</span><button id="difficultyButton" onclick=javascript:bar_config() >bar_config</button> <br>
+		&nbsp;&nbsp;横幅<input type="text" id="widthBox" value=60 size=20></input><br>
+		&nbsp;&nbsp;存在可能域<input type="text" id="regionBox" value=[-120,120] size=20></input><br>
+		&nbsp;&nbsp;ボード反映範囲([-1,1]の範囲内)<input type="text" id="calibBox" value=[-0.85,0.85] size=20></input>
+	</p>
+	<p>次の手順 : <span id="nextStep"></span></p>
+	<div id="log" class="box">
+		手順
+		・Controllerを起動する<br>
+		・Gameを起動する<br>
+		・Clientも起動する<br>
+		・プレイヤーが装着したらopeningコマンドを送信<br>
+		・難易度を選択してもらい、この画面で入力してdifficultyコマンドを送信<br>
+		・Phenoxスタンバイ<br>
+		・px_readyが<span style="color:#ff0000;">Not ready</span>から<span style="color:#0000ff;">Ready</span>になり、かつプレイヤーの準備が整ったらgame_startコマンドを送信<br>
+		・笛を吹いてPhenoxを離陸させる<br>
+		・Phenoxの姿勢が安定するとpx_startコマンドが送信され、ゲームが始まる<br>
+		・何か不測の事態が発生したらabortコマンドを送信<br>
+	</div>
+</body>
+</html>
