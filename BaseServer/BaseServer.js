@@ -68,7 +68,7 @@ function onTransfer(socket,data,fromHeroku){
 			var rooms=data["room"].filter(function (x, i, self) {
 					return self.indexOf(x) === i;
 				});
-			for(var i=0;i<rooms.length;++i){
+			/*for(var i=0;i<rooms.length;++i){
 				if(rooms[i]=="Client"){
 					socketC.emit("transfer",{"event":data["event"],"data":data["data"]});
 				}else{
@@ -78,6 +78,16 @@ function onTransfer(socket,data,fromHeroku){
 						socket.broadcast.to(rooms[i]).emit(data["event"],data["data"]);
 					}
 				}
+			}*/
+			if(fromHeroku){
+				for(var i=0;i<rooms.length;++i){
+					ioS.to(rooms[i]).emit(data["event"],data["data"]);
+				}
+			}else{
+				socketC.emit("transfer",data);//一度Herokuにも投げる(Heroku側から再送信はされないはず)
+				for(var i=0;i<rooms.length;++i){
+					socket.broadcast.to(rooms[i]).emit(data["event"],data["data"]);
+				}
 			}
 		}else{
 			if(data["room"]=="Client"){
@@ -86,6 +96,7 @@ function onTransfer(socket,data,fromHeroku){
 				if(fromHeroku){
 					ioS.to(data['room']).emit(data["event"],data["data"]);
 				}else{
+					socketC.emit("transfer",data);//一度Herokuにも投げる(Heroku側から再送信はされないはず)
 					socket.broadcast.to(data['room']).emit(data["event"],data["data"]);
 				}
 			}
@@ -94,7 +105,7 @@ function onTransfer(socket,data,fromHeroku){
 		if(fromHeroku){
 			ioS.sockets.emit(data['event'],data['data']);
 		}else{
-			socketC.emit("transfer",{"event":data["event"],"data":data["data"]});
+			socketC.emit("transfer",data);//一度Herokuにも投げる(Heroku側から再送信はされないはず)
 			socket.broadcast.emit(data['event'],data['data']);
 		}
 	}
