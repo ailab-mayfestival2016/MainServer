@@ -62,6 +62,40 @@ function updateClientInfo(event,id,data){
 
 //データ転送
 function onTransfer(socket,data,fromHeroku){
+	if("room" in data){
+		if(Array.isArray(data["room"])){
+			var rooms=data["room"].filter(function (x, i, self) {
+					return self.indexOf(x) === i;
+				});
+			if(fromHeroku){
+				for(var i=0;i<rooms.length;++i){
+					ioS.to(rooms[i]).emit(data["event"],data["data"]);
+				}
+			}else{
+				socketC.emit("transfer",{"event":data["event"],"room":rooms,"data":data["data"]});
+				for(var i=0;i<rooms.length;++i){
+					socket.broadcast.to(rooms[i]).emit(data["event"],data["data"]);
+				}
+			}
+		}else{
+			if(fromHeroku){
+				ioS.to(data['room']).emit(data["event"],data["data"]);
+			}else{
+				socketC.emit("transfer",data);
+				socket.broadcast.to(data['room']).emit(data["event"],data["data"]);
+			}
+		}
+	}else{
+		if(fromHeroku){
+			ioS.sockets.emit(data['event'],data['data']);
+		}else{
+			socketC.emit("transfer",data);
+			socket.broadcast.emit(data['event'],data['data']);
+		}
+	}
+}
+//データ転送(Clientの混在を認めない(旧版))
+function onTransferOld(socket,data,fromHeroku){
 	//console.log(JSON.stringify(data))
 	if("room" in data){
 		if(Array.isArray(data["room"])){
@@ -110,6 +144,7 @@ function onTransfer(socket,data,fromHeroku){
 		}
 	}
 }
+
 
 //ローカルサーバを立てる
 launchS();
