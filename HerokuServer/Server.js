@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 var adminPage = require('./routes/adminPage');
+var observerPage = require('./routes/observerPage');
+var managerPage = require('./routes/managerPage');
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -10,6 +12,8 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use('/admin',adminPage);
+app.use('/observer',observerPage);
+app.use('/manager',managerPage);
 
 //管理者関連
 var adminPass="ailab";
@@ -90,33 +94,25 @@ function updateClientInfo(list,event,id,data){
 		io.to("Admin").emit('clientInfo',{"clients":clients,"baseClients":baseClients});
 	//}
 }
-//データ転送
+//データ転送(シンプルに全体送信)
 function onTransfer(socket,data){
-	//console.log(JSON.stringify(data))
 	if('room' in data){
 		if(Array.isArray(data['room'])){
 			var rooms=data["room"].filter(function (x, i, self) {
-					if(x=="Client"){
-						if(self.indexOf(x)==i){
-							socket.broadcast.to("Client").emit(data["event"],data["data"]);
-						}
-						return false;
-					}else{
-						return self.indexOf(x) === i;
-					}
+					return self.indexOf(x) === i;
 				});
 			if(rooms.length>0){
 				socket.broadcast.to("Base").emit("transfer",{"event":data["event"],"room":rooms,"data":data["data"]});
 			}
-		}else{
-			if(data["room"]=="Client"){
-				socket.broadcast.to("Client").emit(data["event"],data["data"]);
-			}else{
-				socket.broadcast.to("Base").emit("transder",data);
+			for(var i=0;i<rooms.length;++i){
+				socket.broadcast.to(rooms[i]).emit(data["event"],data["data"]);
 			}
+		}else{
+			socket.broadcast.to("Base").emit("transder",data);
+			socket.broadcast.to(data["room"]).emit(data["event"],data["data"]);
 		}
 	}else{
-		socket.broadcast.to("Client").emit(data["event"],data["data"]);
+		socket.broadcast.emit(data["event"],data["data"]);
 		socket.broadcast.to("Base").emit("transfer",data);
 	}
 }
