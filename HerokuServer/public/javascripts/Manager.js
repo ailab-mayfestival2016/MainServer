@@ -57,6 +57,13 @@ function px_start(){
 			'data':true
 		});
 }
+function gameover(){
+	socket.emit("transfer",{
+			'event':"px_position",
+			'room':["Game"],
+			'data':[0.0,-10000.0]
+		});
+}
 function bar_config(){
 	console.log("bar_config");
 	try{

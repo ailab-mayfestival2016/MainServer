@@ -25,6 +25,7 @@
 		<button id="openingButton" onclick=javascript:opening() >opening</button>
 		<button id="game_startSendButton" onclick=javascript:game_start() >game_start</button>
 		<button id="abortButton" onclick=javascript:abort() >abort</button>
+		<button id="gameoverButton" onclick=javascript:gameover() >gameover</button>
 	</p>
 	<p>難易度入力<input type="text" id="diffBox" size=20></input><button id="difficultyButton" onclick=javascript:difficulty() >set difficulty</button></p>
 	<p>デバッグ用px_start送信<button id="px_startButton" onclick=javascript:px_start() >px_start</button></p>
@@ -35,7 +36,7 @@
 	</p>
 	<p>次の手順 : <span id="nextStep"></span></p>
 	<div id="log" class="box">
-		手順
+		手順<br>
 		・Controllerを起動する<br>
 		・Gameを起動する<br>
 		・Clientも起動する<br>
@@ -46,6 +47,7 @@
 		・笛を吹いてPhenoxを離陸させる<br>
 		・Phenoxの姿勢が安定するとpx_startコマンドが送信され、ゲームが始まる<br>
 		・何か不測の事態が発生したらabortコマンドを送信<br>
+		・abortでなく、ゲームオーバーにしたいとき(バーを越えたのに反応しないなど)はgameoverボタンを押す
 	</div>
 </body>
 </html>
